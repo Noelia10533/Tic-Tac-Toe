@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components'
 
-type SquareValue = 'X' | 'O' | null;
+export type SquareValue = 'X' | 'O' | null;
 
 interface SquareProps {
   value: SquareValue;
@@ -11,7 +11,7 @@ interface SquareProps {
 const StyleButtonSquare = styled.button<{ $value: SquareValue }>`
   background-color: #e2e1a6;
   border-radius: px;
-  border: 4px solid #5384c5;
+  border: 4px solid #000000;
   color: #1f3911;
   padding: 3em 3em;
   width: 50px;
@@ -24,7 +24,7 @@ const StyleButtonSquare = styled.button<{ $value: SquareValue }>`
   font-size: 2rem; 
 `;
 
-function Square({ value, onSquareClick }: SquareProps) {
+export function Square({ value, onSquareClick }: SquareProps) {
   return (
     <StyleButtonSquare $value={value} className="square" onClick={onSquareClick}>
       {value}
@@ -41,6 +41,10 @@ interface BoardProps{
 const StyleBoard = styled.div`
   display: flex;          
   flex-direction: row;
+`
+
+const StyleText = styled.div`
+  color: #1f3911;
 `
 
 function Board({ xIsNext, squares, onPlay }: BoardProps) {
@@ -69,7 +73,7 @@ function Board({ xIsNext, squares, onPlay }: BoardProps) {
 
     return (
     <>
-      <div className="status">{status}</div>
+      <StyleText className="status">{status}</StyleText>
       <StyleBoard className="board-row">
         <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
         <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
@@ -110,7 +114,7 @@ const StyleGame = styled.button`
   height: 100px;
   width: 500px;
   background-color: #e2e1a6;
-  border: 3px solid #5384c5;
+  border: 3px solid #000000;
   padding: 10px;
   box-shadow: 5px 5px 5px 0px lightgray;
   margin: 10px;
@@ -158,7 +162,7 @@ export default function Game() {
   );
 }
 
-function calculateWinner(squares: SquareValue[]): SquareValue {
+export function calculateWinner(squares: SquareValue[]): SquareValue {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
