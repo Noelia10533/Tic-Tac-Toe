@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import styled from 'styled-components'
 
 type SquareValue = 'X' | 'O' | null;
 
@@ -7,11 +8,27 @@ interface SquareProps {
   onSquareClick: () => void;
 }
 
+const StyleButtonSquare = styled.button<{ $value: SquareValue }>`
+  background-color: #e2e1a6;
+  border-radius: px;
+  border: 4px solid #5384c5;
+  color: #1f3911;
+  padding: 3em 3em;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;      
+  overflow: hidden; 
+  flex-shrink: 0;
+  font-size: 2rem; 
+`;
+
 function Square({ value, onSquareClick }: SquareProps) {
   return (
-    <button className="square" onClick={onSquareClick}>
+    <StyleButtonSquare $value={value} className="square" onClick={onSquareClick}>
       {value}
-    </button>
+    </StyleButtonSquare>
   );
 }
 
@@ -20,6 +37,11 @@ interface BoardProps{
   squares: SquareValue[];
   onPlay: (squares: SquareValue[]) => void;
 }
+
+const StyleBoard = styled.div`
+  display: flex;          
+  flex-direction: row;
+`
 
 function Board({ xIsNext, squares, onPlay }: BoardProps) {
     function handleClick(i: number) {
@@ -39,31 +61,60 @@ function Board({ xIsNext, squares, onPlay }: BoardProps) {
     let status;
     if (winner) {
     status = 'Ganador: ' + winner;
+    } else if (squares.every((square) => square != null)){
+    status = 'Ha habido un empate';
     } else {
     status = 'Siguiente jugador: ' + (xIsNext ? 'X' : 'O');
-    }
+    } 
 
     return (
     <>
       <div className="status">{status}</div>
-      <div className="board-row">
+      <StyleBoard className="board-row">
         <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
         <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
         <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
-      </div>
-      <div className="board-row">
+      </StyleBoard>
+      <StyleBoard className="board-row">
         <Square value={squares[3]} onSquareClick={() => handleClick(3)} />
         <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
         <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
-      </div>
-      <div className="board-row">
+      </StyleBoard>
+      <StyleBoard className="board-row">
         <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
         <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
         <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
-      </div>
+      </StyleBoard>
     </>
   );
 }
+
+const GameContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
+`
+
+const GameInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+const BoardContainer = styled.div`
+  display: flex;
+  flex-direction: column; 
+`
+
+const StyleGame = styled.button`
+  height: 100px;
+  width: 500px;
+  background-color: #e2e1a6;
+  border: 3px solid #5384c5;
+  padding: 10px;
+  box-shadow: 5px 5px 5px 0px lightgray;
+  margin: 10px;
+`
 
 export default function Game() {
   const [history, setHistory] = useState([Array(9).fill(null)]);
@@ -90,20 +141,20 @@ export default function Game() {
     }
     return (
       <li key={move}>
-        <button onClick={() => jumpTo(move)}>{description}</button>
+        <StyleGame onClick={() => jumpTo(move)}>{description}</StyleGame>
       </li>
     );
   });
 
   return (
-    <div className="game">
-      <div className="game-board">
+    <GameContainer className="game">
+      <BoardContainer className="game-board">
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
-      </div>
-      <div className="game-info">
+      </BoardContainer>
+      <GameInfo className="game-info">
         <ol>{moves}</ol>
-      </div>
-    </div>
+      </GameInfo>
+    </GameContainer>
   );
 }
 
