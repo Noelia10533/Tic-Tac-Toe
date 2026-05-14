@@ -47,7 +47,7 @@ const StyleText = styled.div`
   color: #1f3911;
 `
 
-function Board({ xIsNext, squares, onPlay }: BoardProps) {
+export function Board({ xIsNext, squares, onPlay }: BoardProps) {
     function handleClick(i: number) {
         if (calculateWinner(squares) || squares[i]) {
         return;
